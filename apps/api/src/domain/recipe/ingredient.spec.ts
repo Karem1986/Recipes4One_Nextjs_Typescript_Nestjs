@@ -11,7 +11,7 @@ describe('Ingredient.create', () => {
 });
 
 describe('Ingredient.scaleBy', () => {
-  describe('measured units (g, ml) -- scale linearly', () => {
+  describe('measured units (g, ml, tsp) scale, then round by size', () => {
     it('divides 200 g rice by 4', () => {
       const rice = Ingredient.create({ name: 'basmati rice', quantity: Quantity.of(200, 'g') });
       const scaled = rice.scaleBy(0.25);
@@ -19,10 +19,22 @@ describe('Ingredient.scaleBy', () => {
       expect(scaled.quantity.unit.symbol).toBe('g');
     });
 
-    it('rounds to something a person can measure', () => {
-      const milk = Ingredient.create({ name: 'coconut milk', quantity: Quantity.of(400, 'ml') });
-      // 400 / 3 = 133.333...
-      expect(Number.isInteger(milk.scaleBy(1 / 3).quantity.amount)).toBe(true);
+    it('never rounds a small amount down to nothing -- 1 tsp cumin for one person', () => {
+      // A recipe for 4 with 1 tsp cumin needs 0.25 tsp for 1. Math.round(0.25) is 0,
+      // and Quantity refuses 0 so measured amounds go through roundForKitchen do this instead
+      const cumin = Ingredient.create({ name: 'ground cumin', quantity: Quantity.of(1, 'tsp') });
+      expect(cumin.scaleBy(0.25).quantity.amount).toBeGreaterThan(0);
+    });
+
+    // Pins the precision rule: 10 and up -> whole, 1 to 10 -> one decimal, under 1 -> two.
+    it.each([
+      ['400 ml / 3 -> whole number', 400, 'ml', 1 / 3, 133],
+      ['5 tbsp / 4 -> one decimal', 5, 'tbsp', 0.25, 1.3],
+      ['1 tsp / 4 -> two decimals, not rounded to 0.3', 1, 'tsp', 0.25, 0.25],
+      ['1 tsp / 8 -> two decimals', 1, 'tsp', 0.125, 0.13],
+    ] as const)('%s', (_label, amount, unit, factor, expected) => {
+      const spice = Ingredient.create({ name: 'spice', quantity: Quantity.of(amount, unit) });
+      expect(spice.scaleBy(factor).quantity.amount).toBe(expected);
     });
   });
 
@@ -60,6 +72,10 @@ describe('Ingredient.scaleBy', () => {
       const scaled = chickpeas(2).scaleBy(0.25);
       expect(scaled.quantity.unit.symbol).toBe('can');
       expect(scaled.quantity.amount).toBe(1);
+    });
+
+    it('keeps gramsPerUnit, so the UI can still show "1 can of chickpeas(400 g)"', () => {
+      expect(chickpeas().scaleBy(0.25).gramsPerUnit).toBe(400);
     });
   });
 });

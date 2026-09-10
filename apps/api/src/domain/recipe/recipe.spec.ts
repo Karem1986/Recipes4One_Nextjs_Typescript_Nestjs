@@ -19,7 +19,7 @@ const curryServingFour = () =>
   });
 
 // Remove `.skip` when you start on Recipe.scaleTo
-describe.skip('Recipe.scaleTo', () => {
+describe('Recipe.scaleTo', () => {
   it('scales every ingredient down from 4 servings to 1', () => {
     const scaled = curryServingFour().scaleTo(Portions.single());
     const byName = new Map(scaled.ingredients.map((i) => [i.name, i.quantity]));

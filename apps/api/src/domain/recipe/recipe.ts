@@ -62,11 +62,17 @@ export class Recipe {
    *
    * The interesting part -- decide and defend this, it is your best interview answer:
    *   What happens when scaling down leaves an ingredient unusable?
-   *
-   * Whichever you pick, the reason belongs in a comment here. That comment is
-   * the difference between a tutorial project and one you designed.
    */
-  scaleTo(_target: Portions): ScaledRecipe {
-    throw new Error('TODO: implement Recipe.scaleTo');
+  scaleTo(target: Portions): ScaledRecipe {
+    const factor = this.basePortions.factorTo(target);
+    const ingredients = this.ingredients.map((ingredient) => ingredient.scaleBy(factor));
+
+    return {
+      recipe: this,
+      requestedPortions: target,
+      actualPortions: target,
+      ingredients,
+      notes: [],
+    };
   }
 }

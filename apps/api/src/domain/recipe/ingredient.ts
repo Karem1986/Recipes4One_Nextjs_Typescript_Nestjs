@@ -12,6 +12,16 @@ export interface IngredientProps {
   readonly gramsPerUnit?: number;
 }
 
+/** Precision that matches how people measure: 133 ml, 2.5 tbsp, 0.25 tsp.
+ * 0.25 tsp now stays 0.25 instead of rounding down to 0 and crashing. */
+function roundForKitchen(amount: number): number {
+  // round down to whole number
+  if (amount >= 10) return Math.round(amount);
+  // round down to 1 decimal
+  if (amount >= 1) return Math.round(amount * 10) / 10;  
+  return Math.round(amount * 100) / 100;
+}
+
 export class Ingredient {
   private constructor(
     readonly name: string,
@@ -30,7 +40,8 @@ export class Ingredient {
   scaleBy(factor: number): Ingredient {
     const scaled = this.quantity.scaleBy(factor);
 
-    const amount = scaled.isCountable ? Math.ceil(scaled.amount) : Math.round(scaled.amount);
+    const amount = scaled.isCountable ? Math.ceil(scaled.amount) : roundForKitchen(scaled.amount);
+  roundForKitchen(scaled.amount)
     return new Ingredient(this.name, scaled.withAmount(amount), this.gramsPerUnit);
   }
 }

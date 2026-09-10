@@ -1,6 +1,4 @@
-# Start here — day 1
-
-Target: working demo **22 Sept**, meeting with Anthony Perez **23 Sept**.
+# Start here
 
 ## Run it
 
@@ -20,15 +18,12 @@ spec file describing the behaviour before you write it.
 2. `apps/api/src/domain/recipe/ingredient.ts` → `Ingredient.scaleBy`
    The heart of it. Two rules, and the unit decides which (no stored role):
    - measured (`g`, `ml`, `tsp`) → scale linearly, round to a measurable precision
-   - counted (`clove`, `piece`, `can`) → round UP to whole units, minimum 1
+   - counted (`clove`, `piece`, `can`) → round UP to whole units, minimum 1 to avoid ending up wih half can of chickpeas in the fridge
 
 3. `apps/api/src/domain/recipe/recipe.ts` → `Recipe.scaleTo`
    Map over ingredients. Then decide what happens when a recipe can't honestly
    serve 1 — that decision is your best interview answer, so write the reason
    in a comment.
-
-Each spec file starts with `describe.skip`. Delete the `.skip`, watch it go red,
-make it green.
 
 ```bash
 npm run test:watch --workspace=@recipes4one/api
@@ -44,16 +39,16 @@ npm run test:watch --workspace=@recipes4one/api
 
 ## Decided so far
 
-- Plant-based + gluten-free by default; 3 hardcoded recipes, no external API for the demo
-- Portions `1, 2, 4, 8` — powers of two divide cleanly from 4-serving recipes; 3 was
+- Plant-based + gluten-free by default; 3 hardcoded recipes as a START OF THE PROJECT, no external API for the demo
+- Portions `1, 2, 4, 8`, powers of two divide cleanly from 4-serving recipes; 3 was
   dropped because ×0.75 gives 0.75 onion and 1.5 cloves
 - Display concerns (plurals, `½ lime`) live in React; food rules live in the domain layer
 - Bulk ingredients (cans, tofu blocks) always come in whole units, rounded up: a
   half used can gets usually forgotten in the fridge. Trade-off: a heavier dish at 1
   portion, which the app should say in its notes
 - No `role` field on ingredients: whether something is counted comes from its
-  unit, so the two can never disagree (a stored role could call a lime
-  `continuous` and crash at 0.25 of a lime)
+  unit, so the two can never disagree.
+- To fix the teaspoon measure bug, I decided to use a function 'roundForKitchen' which does: 10 and up → whole number, 1 to 10 → one decimal, under 1 → two decimals meaning that 0.25 tsp of cumin stay 0.25 tsp of cumin instead of rounding down to 0 and crashing.
 
 ## Not doing for the demo
 
