@@ -9,16 +9,11 @@ const curryServingFour = () =>
     title: 'Coconut chickpea curry',
     basePortions: Portions.of(4),
     ingredients: [
-      Ingredient.create({ name: 'basmati rice', quantity: Quantity.of(200, 'g'), role: 'continuous' }),
-      Ingredient.create({ name: 'coconut milk', quantity: Quantity.of(400, 'ml'), role: 'continuous' }),
-      Ingredient.create({ name: 'garlic', quantity: Quantity.of(2, 'clove'), role: 'countable-aromatic' }),
-      Ingredient.create({ name: 'onion', quantity: Quantity.of(1, 'piece'), role: 'countable-aromatic' }),
-      Ingredient.create({
-        name: 'chickpeas',
-        quantity: Quantity.of(1, 'can'),
-        role: 'countable-bulk',
-        gramsPerUnit: 400,
-      }),
+      Ingredient.create({ name: 'basmati rice', quantity: Quantity.of(200, 'g') }),
+      Ingredient.create({ name: 'coconut milk', quantity: Quantity.of(400, 'ml') }),
+      Ingredient.create({ name: 'garlic', quantity: Quantity.of(2, 'clove') }),
+      Ingredient.create({ name: 'onion', quantity: Quantity.of(1, 'piece') }),
+      Ingredient.create({ name: 'chickpeas', quantity: Quantity.of(1, 'can'), gramsPerUnit: 400 }),
     ],
     steps: ['Fry the onion and garlic', 'Add everything else', 'Simmer'],
   });
@@ -33,17 +28,14 @@ describe.skip('Recipe.scaleTo', () => {
     expect(byName.get('coconut milk')?.amount).toBe(100);
     expect(byName.get('garlic')?.amount).toBe(1);
     expect(byName.get('onion')?.amount).toBe(1);
-    expect(byName.get('chickpeas')?.amount).toBe(100);
+    expect(byName.get('chickpeas')?.amount).toBe(1); // a whole can
   });
 
-  it('keeps the rice-to-chickpea ratio sane -- the bug that started all this', () => {
+  it('uses a whole can rather than leaving a half-open one in the fridge', () => {
     const scaled = curryServingFour().scaleTo(Portions.single());
-    const byName = new Map(scaled.ingredients.map((i) => [i.name, i.quantity]));
-    const rice = byName.get('basmati rice')!.amount;
-    const chickpeas = byName.get('chickpeas')!.amount;
-
-    // Original ratio is 200:400. Ceiling the can would have made it 50:400.
-    expect(chickpeas / rice).toBeCloseTo(2, 1);
+    const chickpeas = scaled.ingredients.find((i) => i.name === 'chickpeas')!;
+    expect(chickpeas.quantity.unit.symbol).toBe('can');
+    expect(chickpeas.quantity.amount).toBe(1);
   });
 
   it('records what was asked for', () => {
@@ -55,7 +47,7 @@ describe.skip('Recipe.scaleTo', () => {
     const scaled = curryServingFour().scaleTo(Portions.of(4));
     const byName = new Map(scaled.ingredients.map((i) => [i.name, i.quantity]));
     expect(byName.get('basmati rice')?.amount).toBe(200);
-    expect(byName.get('chickpeas')?.amount).toBe(400); // now in grams
+    expect(byName.get('chickpeas')?.amount).toBe(1); // still one whole can
   });
 
   it('does not mutate the original recipe', () => {
@@ -65,6 +57,6 @@ describe.skip('Recipe.scaleTo', () => {
   });
 
   // Your design decision -- write the test once you have decided.
-  it.todo('explains itself in notes when a recipe cannot honestly serve 1');
+  it.todo('says in notes when a whole can makes the dish heavier than the original');
   it.todo('sets actualPortions above requestedPortions when it bumps the yield');
 });

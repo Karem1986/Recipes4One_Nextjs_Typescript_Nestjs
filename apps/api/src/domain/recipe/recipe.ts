@@ -62,11 +62,6 @@ export class Recipe {
    *
    * The interesting part -- decide and defend this, it is your best interview answer:
    *   What happens when scaling down leaves an ingredient unusable?
-   *   Options you already worked through:
-   *     a) convert countable-bulk to grams (Ingredient.scaleBy already does this)
-   *     b) round up and report the leftover in `notes`
-   *     c) refuse to go below the portion count that works, set `actualPortions`
-   *        higher than `requestedPortions`, and say so in `notes`
    *
    * Whichever you pick, the reason belongs in a comment here. That comment is
    * the difference between a tutorial project and one you designed.
