@@ -1,8 +1,7 @@
 import { InvalidPortionsError } from '../shared/domain-error';
 import { Portions } from './portions';
 
-// Remove `.skip` when you start on Portions.of
-describe.skip('Portions', () => {
+describe('Portions', () => {
   it.each(Portions.ALLOWED)('accepts %p', (value) => {
     expect(Portions.of(value).value).toBe(value);
   });

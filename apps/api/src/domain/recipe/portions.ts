@@ -15,18 +15,13 @@ export class Portions {
 
   private constructor(readonly value: number) {}
 
-  /**
-   * TODO(karin): build a valid Portions or throw InvalidPortionsError.
-   *
-   * Reject: anything not in ALLOWED, non-integers, zero, negatives, NaN, Infinity.
-   * The error message ends up in an API response, so make it say what was allowed.
-   *
-   * See portions.spec.ts — the tests describe the behaviour before you write it.
-   */
   static of(value: number): Portions {
-    throw new InvalidPortionsError(
-      `TODO: implement Portions.of -- received ${value}, allowed are ${Portions.ALLOWED.join(', ')}`,
-    );
+    if (!(Portions.ALLOWED as readonly number[]).includes(value)) {
+      throw new InvalidPortionsError(
+        `Portions must be one of ${Portions.ALLOWED.join(', ')}, got ${value}`,
+      );
+    }
+    return new Portions(value);
   }
 
   static single(): Portions {
