@@ -21,7 +21,7 @@ describe('Ingredient.scaleBy', () => {
 
     it('never rounds a small amount down to nothing -- 1 tsp cumin for one person', () => {
       // A recipe for 4 with 1 tsp cumin needs 0.25 tsp for 1. Math.round(0.25) is 0,
-      // and Quantity refuses 0 so measured amounds go through roundForKitchen do this instead
+      // and Quantity refuses 0 so measured amounts go through roundForKitchen instead.
       const cumin = Ingredient.create({ name: 'ground cumin', quantity: Quantity.of(1, 'tsp') });
       expect(cumin.scaleBy(0.25).quantity.amount).toBeGreaterThan(0);
     });
@@ -74,7 +74,7 @@ describe('Ingredient.scaleBy', () => {
       expect(scaled.quantity.amount).toBe(1);
     });
 
-    it('keeps gramsPerUnit, so the UI can still show "1 can of chickpeas(400 g)"', () => {
+    it('keeps gramsPerUnit, so the UI can still show "1 can of chickpeas (400 g)"', () => {
       expect(chickpeas().scaleBy(0.25).gramsPerUnit).toBe(400);
     });
   });

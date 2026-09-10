@@ -1,21 +1,24 @@
 import { InvalidRecipeError } from '../shared/domain-error';
 import { Ingredient } from './ingredient';
 import { Portions } from './portions';
+import type { UnitSymbol } from '../quantity/unit';
 
-/**
- * The result of scaling a recipe.
- *
- * `actualPortions` exists because it does not always equal what was asked for.
- * When an ingredient cannot sensibly go below a whole unit, the honest answer is
- * not to fake a quarter of a lime -- it is to say "this one makes 2 portions,
- * eat one tonight and keep one for tomorrow". `notes` carries that message.
- */
+
+/** A counted ingredient the recipe rounded up to a whole unit. React turns this into the note. */
+export interface RoundedUp {
+  readonly name: string;
+  /** The exact share for the requested portions, e.g. 0.25 of a can. */
+  readonly needed: number;
+  /** What the recipe tells you to use, e.g. 1 whole can. */
+  readonly used: number;
+  readonly unit: UnitSymbol;
+}
+
 export interface ScaledRecipe {
   readonly recipe: Recipe;
   readonly requestedPortions: Portions;
-  readonly actualPortions: Portions;
   readonly ingredients: readonly Ingredient[];
-  readonly notes: readonly string[];
+  readonly roundedUp: readonly RoundedUp[];
 }
 
 export interface RecipeProps {
@@ -56,14 +59,20 @@ export class Recipe {
 
   scaleTo(target: Portions): ScaledRecipe {
     const factor = this.basePortions.factorTo(target);
-    const ingredients = this.ingredients.map((ingredient) => ingredient.scaleBy(factor));
+    const ingredients: Ingredient[] = [];
+    const roundedUp: RoundedUp[] = [];
 
-    return {
-      recipe: this,
-      requestedPortions: target,
-      actualPortions: target,
-      ingredients,
-      notes: [],
-    };
+    for (const original of this.ingredients) {
+      const scaled = original.scaleBy(factor);
+      ingredients.push(scaled);
+
+      const needed = original.quantity.scaleBy(factor).amount; // exact share, no rounding
+      const used = scaled.quantity.amount; // after rounding
+      if (scaled.quantity.isCountable && used > needed) {
+        roundedUp.push({ name: original.name, needed, used, unit: scaled.quantity.unit.symbol });
+      }
+    }
+
+    return { recipe: this, requestedPortions: target, ingredients, roundedUp };
   }
 }

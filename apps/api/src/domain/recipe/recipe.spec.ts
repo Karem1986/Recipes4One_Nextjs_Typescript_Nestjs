@@ -55,4 +55,37 @@ describe('Recipe.scaleTo', () => {
     expect(recipe.ingredients[0]!.quantity.amount).toBe(200);
   });
 
+  describe('roundedUp -- counted ingredients it had to round up, so the UI can tell the user', () => {
+    it('lists every counted ingredient rounded up for one person, in recipe order', () => {
+      const scaled = curryServingFour().scaleTo(Portions.single());
+      expect(scaled.roundedUp).toEqual([
+        { name: 'garlic', needed: 0.5, used: 1, unit: 'clove' },
+        { name: 'onion', needed: 0.25, used: 1, unit: 'piece' },
+        { name: 'chickpeas', needed: 0.25, used: 1, unit: 'can' },
+      ]);
+    });
+
+    it('lists nothing when every amount divides exactly -- meal prep for 8', () => {
+      expect(curryServingFour().scaleTo(Portions.of(8)).roundedUp).toEqual([]);
+    });
+
+    it('ignores measured amounts, even when rounding nudges them up (1.25 -> 1.3 tbsp)', () => {
+      const dressing = Recipe.create({
+        id: 'dressing',
+        title: 'Dressing',
+        basePortions: Portions.of(4),
+        ingredients: [Ingredient.create({ name: 'olive oil', quantity: Quantity.of(5, 'tbsp') })],
+        steps: ['Whisk'],
+      });
+      expect(dressing.scaleTo(Portions.single()).roundedUp).toEqual([]);
+    });
+
+    it('scales up for Sunday meal-prep: 4 -> 8 portions', () => {
+    const scaled = curryServingFour().scaleTo(Portions.of(8));
+    const byName = new Map(scaled.ingredients.map((i) => [i.name, i.quantity]));
+    expect(byName.get('basmati rice')?.amount).toBe(400);
+    expect(byName.get('garlic')?.amount).toBe(4);
+    expect(byName.get('chickpeas')?.amount).toBe(2); // two whole cans
+  });
+  });
 });
