@@ -1,3 +1,23 @@
+node_modules/
+dist/
+build/
+coverage/
+.next/
+out/
+
 .env
+.env.local
+.env.*.local
+
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+.idea/
+*.tsbuildinfo
+
+# Python (legacy/ prototype only)
 venv/
 .venv/
+__pycache__/

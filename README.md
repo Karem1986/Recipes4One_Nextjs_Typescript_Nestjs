@@ -11,6 +11,8 @@ switch on *meal-prep* mode and pick 2, 4, 6, 8 or 10 portions as most of us sing
 
 ## Stack
 
+| Layer | Technology | Why |
+|---|---|---|
 | API | **NestJS** (TypeScript) | Modular, DI-first server framework; enforces boundaries between layers |
 | Frontend | **Next.js** (App Router) + **React** | Server components for recipe pages, client components for the portion selector |
 | Language | **TypeScript**, strict mode | Interfaces, generics and OOP throughout — no `any` |
@@ -25,6 +27,7 @@ switch on *meal-prep* mode and pick 2, 4, 6, 8 or 10 portions as most of us sing
 
 Clean Architecture, with dependencies pointing inwards only, it can be tested with plain Jest and no test container.
 
+```
 apps/
   api/                      NestJS
     src/
@@ -43,6 +46,7 @@ apps/
     lib/                    Typed API client
 packages/
   shared/                   Types shared between api and web
+```
 
 **SOLID in practice:** use cases depend on a `RecipeRepository` *interface* defined in the
 application layer (dependency inversion); the Postgres implementation lives in infrastructure and is
@@ -53,7 +57,7 @@ bound in a Nest module. Swapping Postgres for anything else touches one file and
 RESTful, versioned under `/api/v1`, documented with OpenAPI (Swagger UI at `/api/docs`).
 
 | Method | Endpoint | Purpose |
-
+|---|---|---|
 | `GET` | `/api/v1/recipes` | List recipes, filterable and paginated |
 | `GET` | `/api/v1/recipes/:id?portions=4` | A recipe with all quantities scaled to `portions` |
 | `POST` | `/api/v1/recipes` | Create a recipe (authenticated) |

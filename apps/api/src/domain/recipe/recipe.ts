@@ -1,0 +1,77 @@
+import { InvalidRecipeError } from '../shared/domain-error';
+import { Ingredient } from './ingredient';
+import { Portions } from './portions';
+
+/**
+ * The result of scaling a recipe.
+ *
+ * `actualPortions` exists because it does not always equal what was asked for.
+ * When an ingredient cannot sensibly go below a whole unit, the honest answer is
+ * not to fake a quarter of a lime -- it is to say "this one makes 2 portions,
+ * eat one tonight and keep one for tomorrow". `notes` carries that message.
+ */
+export interface ScaledRecipe {
+  readonly recipe: Recipe;
+  readonly requestedPortions: Portions;
+  readonly actualPortions: Portions;
+  readonly ingredients: readonly Ingredient[];
+  readonly notes: readonly string[];
+}
+
+export interface RecipeProps {
+  readonly id: string;
+  readonly title: string;
+  /** Portions the ingredient amounts below are written for. Usually 4. */
+  readonly basePortions: Portions;
+  readonly ingredients: readonly Ingredient[];
+  readonly steps: readonly string[];
+}
+
+export class Recipe {
+  private constructor(
+    readonly id: string,
+    readonly title: string,
+    readonly basePortions: Portions,
+    readonly ingredients: readonly Ingredient[],
+    readonly steps: readonly string[],
+  ) {}
+
+  static create(props: RecipeProps): Recipe {
+    if (props.title.trim().length === 0) {
+      throw new InvalidRecipeError('Recipe title cannot be empty');
+    }
+    if (props.ingredients.length === 0) {
+      throw new InvalidRecipeError(`Recipe "${props.title}" has no ingredients`);
+    }
+    return Object.freeze(
+      new Recipe(
+        props.id,
+        props.title.trim(),
+        props.basePortions,
+        Object.freeze([...props.ingredients]),
+        Object.freeze([...props.steps]),
+      ),
+    );
+  }
+
+  /**
+   * TODO(karin): scale every ingredient to `target` portions.
+   *
+   * Straightforward part:
+   *   factor = this.basePortions.factorTo(target), then map over ingredients.
+   *
+   * The interesting part -- decide and defend this, it is your best interview answer:
+   *   What happens when scaling down leaves an ingredient unusable?
+   *   Options you already worked through:
+   *     a) convert countable-bulk to grams (Ingredient.scaleBy already does this)
+   *     b) round up and report the leftover in `notes`
+   *     c) refuse to go below the portion count that works, set `actualPortions`
+   *        higher than `requestedPortions`, and say so in `notes`
+   *
+   * Whichever you pick, the reason belongs in a comment here. That comment is
+   * the difference between a tutorial project and one you designed.
+   */
+  scaleTo(_target: Portions): ScaledRecipe {
+    throw new Error('TODO: implement Recipe.scaleTo');
+  }
+}
