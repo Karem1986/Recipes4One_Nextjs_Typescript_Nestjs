@@ -18,7 +18,6 @@ const curryServingFour = () =>
     steps: ['Fry the onion and garlic', 'Add everything else', 'Simmer'],
   });
 
-// Remove `.skip` when you start on Recipe.scaleTo
 describe('Recipe.scaleTo', () => {
   it('scales every ingredient down from 4 servings to 1', () => {
     const scaled = curryServingFour().scaleTo(Portions.single());
@@ -56,7 +55,4 @@ describe('Recipe.scaleTo', () => {
     expect(recipe.ingredients[0]!.quantity.amount).toBe(200);
   });
 
-  // Your design decision -- write the test once you have decided.
-  it.todo('says in notes when a whole can makes the dish heavier than the original');
-  it.todo('sets actualPortions above requestedPortions when it bumps the yield');
 });

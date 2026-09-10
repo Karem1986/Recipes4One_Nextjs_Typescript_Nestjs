@@ -54,15 +54,6 @@ export class Recipe {
     );
   }
 
-  /**
-   * TODO(karin): scale every ingredient to `target` portions.
-   *
-   * Straightforward part:
-   *   factor = this.basePortions.factorTo(target), then map over ingredients.
-   *
-   * The interesting part -- decide and defend this, it is your best interview answer:
-   *   What happens when scaling down leaves an ingredient unusable?
-   */
   scaleTo(target: Portions): ScaledRecipe {
     const factor = this.basePortions.factorTo(target);
     const ingredients = this.ingredients.map((ingredient) => ingredient.scaleBy(factor));
