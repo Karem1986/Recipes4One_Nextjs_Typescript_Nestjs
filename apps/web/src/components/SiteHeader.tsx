@@ -15,7 +15,7 @@ import { usePathname } from 'next/navigation';
 
 const TABS = [
   { label: 'Recipes', href: '/' },
-  { label: 'Green businesses', href: '/green-businesses-nl' },
+  { label: 'Green businesses Netherlands', href: '/green-businesses-nl' },
   { label: 'Login', href: '/login' },
   { label: 'Sign up', href: '/signup' },
 ];
