@@ -15,9 +15,9 @@ import { usePathname } from 'next/navigation';
 
 const TABS = [
   { label: 'Recipes', href: '/' },
+  { label: 'Green businesses', href: '/green-businesses-nl' },
   { label: 'Login', href: '/login' },
   { label: 'Sign up', href: '/signup' },
-  { label: 'Green businesses', href: '/green-businesses' },
 ];
 
 /** Which tab to underline. Recipe pages (/recipes/...) belong to the Recipes tab. */
@@ -28,13 +28,6 @@ function activeTab(pathname: string): string | false {
   return TABS.find((tab) => tab.href !== '/' && pathname.startsWith(tab.href))?.href ?? false;
 }
 
-/**
- * The green bar on every page: wordmark, account button and the site's tabs.
- *
- * A Client Component because it reads the current URL with usePathname() to know
- * which tab to underline. White text on #47A612 matches the design mockup; it reads
- * at 3.1:1, so a darker bar is the fix if readability ever matters more.
- */
 export function SiteHeader() {
   const pathname = usePathname();
 
