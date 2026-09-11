@@ -65,7 +65,7 @@ describe('Recipe.scaleTo', () => {
       ]);
     });
 
-    it('lists nothing when every amount divides exactly -- meal prep for 8', () => {
+    it('lists nothing when every amount divides exactly, example: meal prep for 8', () => {
       expect(curryServingFour().scaleTo(Portions.of(8)).roundedUp).toEqual([]);
     });
 

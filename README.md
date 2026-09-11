@@ -72,12 +72,8 @@ use case.
 
 ## Running locally
 
-```bash
 docker compose up --build
-```
 
-| Service | URL |
-|---|---|
 | Web | http://localhost:3000 |
 | API | http://localhost:4000/api/v1 |
 | API docs | http://localhost:4000/api/docs |
@@ -85,26 +81,20 @@ docker compose up --build
 
 Without Docker:
 
-```bash
 npm install
-npm run dev --workspace=api
-npm run dev --workspace=web
-```
+npm run dev --workspace=@recipes4one/api
+npm run dev --workspace=@recipes4one/web
 
 Copy `.env.example` to `.env` first — the app will not start with missing configuration, by design.
 
 ## Testing
 
-```bash
-npm test              # everything
-npm run test:unit     # domain + use cases, no I/O
-npm run test:e2e      # API against a throwaway Postgres container
-```
+npm run test:watch --workspace=@recipes4one/api
 
-Domain logic — unit conversion, portion scaling, rounding — is covered by unit tests that need no
+Domain logic:  unit conversion, portion scaling, rounding is covered by unit tests that need no
 database and no HTTP server. That speed is the payoff for keeping the domain layer pure.
 
-## CI/CD
+## CI/CD --Not yet built.
 
 GitHub Actions runs on every push and pull request:
 
@@ -113,24 +103,17 @@ GitHub Actions runs on every push and pull request:
 3. Unit tests, then e2e tests against a Postgres service container
 4. Build both apps and the Docker images
 
-## AWS
-
-- **S3** — recipe images, uploaded via pre-signed URLs so files never proxy through the API
-- **Lambda** — scheduled job that recalculates and caches scaled quantities for popular recipes
-- **EC2** — the containerised API
-- Infrastructure defined as code, so the environment is reproducible rather than hand-clicked
-
 ## Roadmap
 
-- [ ] Monorepo scaffold (npm workspaces, shared TypeScript config)
-- [ ] Domain layer: `Quantity`, `Unit`, `Ingredient`, `Recipe` + scaling rules, fully unit-tested
-- [ ] Application layer: use cases and repository ports
+- [x] Monorepo scaffold with claude (npm workspaces, shared TypeScript config)
+- [x] Domain layer: `Quantity`, `Unit`, `Ingredient`, `Recipe` + scaling rules, fully unit-tested
+- [ ] Next.js frontend: recipe list, recipe detail, portion selector
+- [ ] Application layer: the frontend in react and nest js
 - [ ] Infrastructure: Postgres repositories, migrations, seed data
 - [ ] REST API with validation, JWT auth and Swagger docs
-- [ ] Next.js frontend: recipe list, recipe detail, portion selector
 - [ ] Docker Compose for local development
 - [ ] GitHub Actions pipeline
-- [ ] AWS infrastructure as code
+- [ ] Deploy to cloud provider
 
 ## History
 

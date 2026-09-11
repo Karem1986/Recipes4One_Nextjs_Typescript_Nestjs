@@ -45,7 +45,7 @@ npm run test:watch --workspace=@recipes4one/api
 - Display concerns (plurals, `½ lime`) live in React; food rules live in the domain layer
 - Bulk ingredients (cans, tofu blocks) always come in whole units, rounded up: a
   half used can gets usually forgotten in the fridge. Trade-off: a heavier dish at 1
-  portion, which the app should say in its notes
+  portion, which the app says in the UI as a note: "Uses 1 whole can of chickpeas. A bit more than the recipe needs, but nothing left half-open in your fridge".
 - No `role` field on ingredients: whether something is counted comes from its
   unit, so the two can never disagree.
 - To fix the teaspoon measure bug, I decided to use a function 'roundForKitchen' which does: 10 and up → whole number, 1 to 10 → one decimal, under 1 → two decimals meaning that 0.25 tsp of cumin stay 0.25 tsp of cumin instead of rounding down to 0 and crashing.
