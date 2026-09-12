@@ -68,7 +68,7 @@ export class Recipe {
 
       const needed = original.quantity.scaleBy(factor).amount; // exact share, no rounding
       const used = scaled.quantity.amount; // after rounding
-      // Only check for counted ingredients like a can of chickpeas, if it uses more than needed, add it to the notes list, visible in the UI React
+      // Only check for counted ingredients like a can of chickpeas, if it uses more than needed add it to the notes in the UI React
       if (scaled.quantity.isCountable && used > needed) {
         roundedUp.push({ name: original.name, needed, used, unit: scaled.quantity.unit.symbol });
       }

@@ -4,7 +4,7 @@ import { InvalidPortionsError } from '../shared/domain-error';
  * How many people a recipe is being cooked for.
  *
  * A value object rather than a bare number, so an invalid portion count cannot
- * exist anywhere in the system. If it compiles and you hold a Portions, it is valid.
+ * exist anywhere in the system. If it compiles and you hold a Portion, it is valid.
  *
  * Powers of two divide most cleanly from the 4-serving recipes the outside world
  * publishes. 3 was considered and dropped: from a 4-serving source it means x0.75,

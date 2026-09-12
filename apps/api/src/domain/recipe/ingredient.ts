@@ -12,8 +12,8 @@ export interface IngredientProps {
   readonly gramsPerUnit?: number;
 }
 
-/** Precision that matches how people measure: 133 ml, 2.5 tbsp, 0.25 tsp.
- * 0.25 tsp now stays 0.25 instead of rounding down to 0 and crashing. */
+// 0.25 tsp cumin now stays 0.25 instead of rounding down to 0 and crashing. 
+// 0.25 grams of chickpeas becomes 1 can to avoid the can ending up in the fridge forgotten. */
 function roundForKitchen(amount: number): number {
   // round down to whole number
   if (amount >= 10) return Math.round(amount);

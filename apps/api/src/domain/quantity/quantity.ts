@@ -6,7 +6,7 @@ import { UnitDefinition, UnitSymbol, unitOf } from './unit';
  * returns a new Quantity rather than mutating this one.
  *
  * This class deliberately knows nothing about food. It will happily give you
- * 0.25 of a can — deciding that 0.25 of a can is unusable is a rule about
+ * 0.25 of a can deciding that 0.25 of a can is unusable is a rule about
  * ingredients, and it lives in Ingredient.
  */
 export class Quantity {

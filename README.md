@@ -1,8 +1,9 @@
 # Recipes for One
 
 Cooking for one person is where most household food waste starts. Recipes are written for two or four,
-so you buy for four, cook for four, and throw away three portions. 
-**Recipes for One** 
+so you buy for four, cook for four, and throw away three portions.
+
+**Recipes for One**
 serves every recipe scaled to a single portion by default, and scales up  when you
 switch on *meal-prep* mode and pick 2, 4, 6, 8 or 10 portions as most of us singles do for meal-prep on Sundays!
 
@@ -11,23 +12,23 @@ switch on *meal-prep* mode and pick 2, 4, 6, 8 or 10 portions as most of us sing
 
 ## Stack
 
-| Layer | Technology | Why |
-|---|---|---|
-| API | **NestJS** (TypeScript) | Modular, DI-first server framework; enforces boundaries between layers |
+| API | **Nest JS** (TypeScript) | Modular, DI-first server framework; enforces boundaries between layers |
 | Frontend | **Next.js** (App Router) + **React** | Server components for recipe pages, client components for the portion selector |
 | Language | **TypeScript**, strict mode | Interfaces, generics and OOP throughout — no `any` |
 | Styling | **Tailwind CSS** | Responsive, utility-first, no stylesheet drift |
 | Database | **PostgreSQL** | Relational data: recipes, ingredients, units, users |
 | Testing | **Jest** (API) + **Vitest** / Testing Library (web) | Domain logic unit-tested without a database |
+
+If time I will also do these:
+
 | Containers | **Docker** + Compose | One command to run API, web and database locally |
 | CI/CD | **GitHub Actions** | Lint, type-check, test and build on every push |
-| Cloud | **AWS** (S3, Lambda, EC2) | Recipe images on S3, scaling jobs on Lambda, API on EC2 |
+| Cloud | **Deploy to cloud** (S3, Lambda, EC2) | Recipe images on S3, scaling jobs on Lambda, API on EC2 |
 
 ## Architecture
 
 Clean Architecture, with dependencies pointing inwards only, it can be tested with plain Jest and no test container.
 
-```
 apps/
   api/                      NestJS
     src/
@@ -46,11 +47,6 @@ apps/
     lib/                    Typed API client
 packages/
   shared/                   Types shared between api and web
-```
-
-**SOLID in practice:** use cases depend on a `RecipeRepository` *interface* defined in the
-application layer (dependency inversion); the Postgres implementation lives in infrastructure and is
-bound in a Nest module. Swapping Postgres for anything else touches one file and no tests.
 
 ## API
 
@@ -92,9 +88,10 @@ Copy `.env.example` to `.env` first — the app will not start with missing conf
 npm run test:watch --workspace=@recipes4one/api
 
 Domain logic:  unit conversion, portion scaling, rounding is covered by unit tests that need no
-database and no HTTP server. That speed is the payoff for keeping the domain layer pure.
+database and no HTTP server.
+A test showed that 1 teaspoon of cumin, scaled down for one person, rounded to zero and crashed the recipe, so I changed the rounding to depend on the size of the amount, and a quarter teaspoon now stays a quarter teaspoon.
 
-## CI/CD --Not yet built.
+## CI/CD --Not yet built
 
 GitHub Actions runs on every push and pull request:
 
