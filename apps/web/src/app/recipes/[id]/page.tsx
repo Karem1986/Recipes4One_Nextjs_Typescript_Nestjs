@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getScaledRecipe } from '@/lib/api';
+import { IngredientList } from '@/components/IngredientList';
 
 type RecipePageProps = {
   params: Promise<{ id: string }>;
@@ -39,12 +40,8 @@ export default async function RecipePage({ params }: RecipePageProps) {
       <Typography variant="h2" gutterBottom>
         Ingredients
       </Typography>
-      <Box component="ul" sx={{ mb: 5 }}>
-        {recipe.ingredients.map((ingredient) => (
-          <li key={ingredient.name}>
-            {ingredient.amount} {ingredient.unit} {ingredient.name}
-          </li>
-        ))}
+      <Box sx={{ mb: 5 }}>
+        <IngredientList ingredients={recipe.ingredients} />
       </Box>
 
       <Typography variant="h2" gutterBottom>

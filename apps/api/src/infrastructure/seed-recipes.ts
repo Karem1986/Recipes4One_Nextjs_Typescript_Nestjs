@@ -62,7 +62,7 @@ export const SEED_RECIPES: readonly Recipe[] = [
       Ingredient.create({ name: 'chickpeas', quantity: Quantity.of(1, 'can'), gramsPerUnit: 400 }),
       Ingredient.create({ name: 'cucumber', quantity: Quantity.of(1, 'piece') }),
       Ingredient.create({ name: 'red onion', quantity: Quantity.of(1, 'piece') }),
-      Ingredient.create({ name: 'tomatoes', quantity: Quantity.of(2, 'piece') }),
+      Ingredient.create({ name: 'tomato', quantity: Quantity.of(2, 'piece') }),
       Ingredient.create({ name: 'lemon juice', quantity: Quantity.of(3, 'tsp') }),
       Ingredient.create({ name: 'fresh parsley', quantity: Quantity.of(20, 'g') }),
     ],
