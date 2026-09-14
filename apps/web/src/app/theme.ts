@@ -5,15 +5,11 @@ import { createTheme } from '@mui/material/styles';
 const DISPLAY_FONT = 'var(--font-display), Georgia, "Times New Roman", serif';
 
 /**
- * Design tokens for Recipes for One. Palette chosen by Karin; set up following
- * MUI's v9 theming guidance: CSS variables on, component defaults set once here.
+ * Design tokens for Recipes for One. set up following MUI's v9 theming guidance: CSS variables on, component defaults set once here.
  *
  * Readability: #47A612 is bright, so white text on it is hard to read (3.1:1).
  * Filled green elements therefore get dark text (6.7:1), and green *text* uses
  * `primary.dark`, a deeper shade of the same green (6.2:1 on white).
- *
- * 'use client' is required: createTheme produces functions, and functions cannot
- * cross the server/client boundary.
  */
 const theme = createTheme({
   cssVariables: true,

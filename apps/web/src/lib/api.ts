@@ -21,3 +21,44 @@ export async function getRecipes(): Promise<RecipeSummary[]> {
   }
   return response.json();
 }
+
+/** One ingredient, already scaled by the API. */
+export type ScaledIngredient = {
+  name: string;
+  amount: number;
+  unit: string;
+  gramsPerUnit?: number;
+};
+
+/** A counted ingredient the API rounded up, e.g. 0.25 can needed, 1 can used. */
+export type RoundedUp = {
+  name: string;
+  needed: number;
+  used: number;
+  unit: string;
+};
+
+/** What GET /recipes/:id?portions=N returns. */
+export type ScaledRecipe = {
+  id: string;
+  title: string;
+  portions: number;
+  isMealPrep: boolean;
+  ingredients: ScaledIngredient[];
+  roundedUp: RoundedUp[];
+  steps: string[];
+};
+
+/** Feching each recipe or providing null when the recipe does not exist, it gets shown by the page.tsx file in app/recipes/[id] */
+export async function getScaledRecipe(id: string, portions = 1): Promise<ScaledRecipe | null> {
+  const response = await fetch(`${API_URL}/recipes/${encodeURIComponent(id)}?portions=${portions}`, {
+    cache: 'no-store',
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    throw new Error(`The API answered ${response.status}`);
+  }
+  return response.json();
+}

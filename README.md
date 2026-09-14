@@ -12,14 +12,20 @@ switch on *meal-prep* mode and pick 2, 4, 6, 8 or 10 portions as most of us sing
 
 ## Stack
 
-| API | **Nest JS** (TypeScript) | Modular, DI-first server framework; enforces boundaries between layers |
-| Frontend | **Next.js** (App Router) + **React** | Server components for recipe pages, client components for the portion selector |
-| Language | **TypeScript**, strict mode | Interfaces, generics and OOP throughout — no `any` |
+| Frontend | **Next.js** (App Router) + **React** | Server components for recipe page like cards, buttons.
+React builds the pieces of the screen. A recipe card, a button, the header. It also updates those pieces when something changes: click "2 portions", and React changes the amounts shown on screen. React only knows about pieces. It doesn't know about pages, addresses or servers.
+
+Next.js turns those pieces into a website.
+It decides which page appears at which address (/login shows the login page). What data does a page need before sending it? Login page will show the fields required to login. It prepares everything so the browser can show it.
+
+NestJS is the server behind the scenes, API. It holds recipes and runs the food rules: the portion maths, whole cans, the teaspoon rounding. It never shows a screen. It only answers questions with data, like "here's the curry for one person".
+
+| Language | **TypeScript**, strict mode | Interfaces, generics and OOP throughout
 | Styling | **Tailwind CSS** | Responsive, utility-first, no stylesheet drift |
 | Database | **PostgreSQL** | Relational data: recipes, ingredients, units, users |
 | Testing | **Jest** (API) + **Vitest** / Testing Library (web) | Domain logic unit-tested without a database |
 
-If time I will also do these:
+If time these:
 
 | Containers | **Docker** + Compose | One command to run API, web and database locally |
 | CI/CD | **GitHub Actions** | Lint, type-check, test and build on every push |
@@ -53,7 +59,7 @@ packages/
 RESTful, versioned under `/api/v1`, documented with OpenAPI (Swagger UI at `/api/docs`).
 
 | Method | Endpoint | Purpose |
-|---|---|---|
+
 | `GET` | `/api/v1/recipes` | List recipes, filterable and paginated |
 | `GET` | `/api/v1/recipes/:id?portions=4` | A recipe with all quantities scaled to `portions` |
 | `POST` | `/api/v1/recipes` | Create a recipe (authenticated) |

@@ -52,5 +52,6 @@ npm run test:watch --workspace=@recipes4one/api
 
 ## Not doing for the demo
 
-Auth, database, image upload, real recipe API, AWS. Cut order if behind: CI, Docker,
-the list page. Never cut: domain tests, one recipe scaling end to end.
+Auth, database, image upload, real recipe API.
+
+If time: CI, Docker, the list page.

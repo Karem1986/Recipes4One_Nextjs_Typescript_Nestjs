@@ -11,7 +11,7 @@ export const SEED_RECIPES: readonly Recipe[] = [
   Recipe.create({
     id: 'coconut-chickpea-curry',
     title: 'Coconut chickpea curry',
-    basePortions: Portions.of(4),
+    basePortions: Portions.of(4), // By default 4 portions, it scales by creating a new one based on the portions selected in the React UI.
     ingredients: [
       Ingredient.create({ name: 'basmati rice', quantity: Quantity.of(200, 'g') }),
       Ingredient.create({ name: 'chickpeas', quantity: Quantity.of(1, 'can'), gramsPerUnit: 400 }),
