@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getScaledRecipe } from '@/lib/api';
-import { IngredientList } from '@/components/IngredientList';
+import { RecipeScaler } from '@/components/RecipeScaler';
 
 type RecipePageProps = {
   params: Promise<{ id: string }>;
@@ -33,17 +33,9 @@ export default async function RecipePage({ params }: RecipePageProps) {
       <Typography variant="h1" sx={{ mt: 3, mb: 1 }}>
         {recipe.title}
       </Typography>
-      <Typography color="text.secondary" sx={{ mb: 5 }}>
-        For {recipe.portions} {recipe.portions === 1 ? 'person' : 'people'}
-      </Typography>
 
-      <Typography variant="h2" gutterBottom>
-        Ingredients
-      </Typography>
-      <Box sx={{ mb: 5 }}>
-        <IngredientList ingredients={recipe.ingredients} />
-      </Box>
-
+      <RecipeScaler initialRecipe={recipe} />
+      
       <Typography variant="h2" gutterBottom>
         Steps
       </Typography>

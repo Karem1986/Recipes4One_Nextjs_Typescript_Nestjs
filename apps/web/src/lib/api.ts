@@ -1,9 +1,7 @@
 /**
- * Typed client for the Recipes for One API. The shapes mirror the API's response
- * types; later they can move to packages/shared so the two can never drift apart.
- *
- * Server-side only: it is called from Server Components, which run on the Next.js
- * server, so this request goes server-to-server and CORS is not involved.
+ * Used by Server Components (on the Next.js server) and by RecipeScaler (in the
+ * browser). Browser requests go straight to the API, which is why the API allows
+ * this website in its CORS settings.
  */
 export type RecipeSummary = {
   id: string;
@@ -12,7 +10,7 @@ export type RecipeSummary = {
   cans: number;
 };
 
-const API_URL = process.env.API_URL ?? 'http://localhost:4000/api/v1';
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1';
 
 export async function getRecipes(): Promise<RecipeSummary[]> {
   const response = await fetch(`${API_URL}/recipes`, { cache: 'no-store' });
