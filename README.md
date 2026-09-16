@@ -110,10 +110,11 @@ GitHub Actions runs on every push and pull request:
 
 - [x] Monorepo scaffold with claude (npm workspaces, shared TypeScript config)
 - [x] Domain layer: `Quantity`, `Unit`, `Ingredient`, `Recipe` + scaling rules, fully unit-tested
-- [ ] Next.js frontend: recipe list, recipe detail, portion selector
-- [ ] Application layer: the frontend in react and nest js
-- [ ] Infrastructure: Postgres repositories, migrations, seed data
-- [ ] REST API with validation, JWT auth and Swagger docs
+- [x] Next.js frontend: recipe list, recipe detail, portion selector
+- [x] Application layer: use cases (ListRecipes, GetScaledRecipe) and the RecipeRepository port
+- [ ] Swagger API documentation and request validation
+- [ ] Authentication: register and log in with JWT
+- [ ] Authorization: saved recipes per user, admin-only actions
 - [ ] Docker Compose for local development
 - [ ] GitHub Actions pipeline
 - [ ] Deploy to cloud provider
@@ -122,3 +123,7 @@ GitHub Actions runs on every push and pull request:
 
 This repository began as a Docker Compose experiment with a Python prototype. The domain idea
 survived; the stack was rebuilt in TypeScript. The original prototype remains in the git history.
+
+## Improvements
+
+- [ ] Infrastructure: Postgres repositories, migrations, seed data

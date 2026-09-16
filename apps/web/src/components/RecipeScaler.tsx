@@ -31,7 +31,7 @@ export function RecipeScaler({ initialRecipe }: RecipeScalerProps) {
     try {
       const scaled = await getScaledRecipe(recipe.id, portions); //Browser asks the API for the recipe at the new size. It's the same function the server page uses.
       if (scaled) {
-        setRecipe(scaled);
+        setRecipe(scaled); //Tells React something changed and let know so that he redraws the screen. 
       }
     } finally {
       setIsLoading(false);
