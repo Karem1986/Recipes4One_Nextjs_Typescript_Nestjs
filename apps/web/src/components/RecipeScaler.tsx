@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { IngredientList } from '@/components/IngredientList';
 import { PortionPicker } from '@/components/PortionPicker';
 import { getScaledRecipe, type ScaledRecipe } from '@/lib/api';
+import { RoundedUpNote } from '@/components/RoundedUpNote';
 
 type RecipeScalerProps = {
   /** The recipe for one person, already fetched by the server page. */
@@ -40,6 +41,7 @@ export function RecipeScaler({ initialRecipe }: RecipeScalerProps) {
   return (
     <>
       <PortionPicker value={recipe.portions} onChange={handlePortionsChange} />
+      <RoundedUpNote items={recipe.roundedUp} />
       <Typography variant="h2" gutterBottom>
         Ingredients
       </Typography>
