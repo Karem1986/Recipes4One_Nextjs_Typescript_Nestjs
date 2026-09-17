@@ -5,7 +5,7 @@ so you buy for four, cook for four, and throw away three portions.
 
 **Recipes for One**
 serves every recipe scaled to a single portion by default, and scales up  when you
-switch on *meal-prep* mode and pick 2, 4, 6, 8 or 10 portions as most of us singles do for meal-prep on Sundays!
+switch and pick 2, 4, 6, 8 portions as most of singles do for meal-prep on Sundays.
 
 > **Status: in active development.** The sections below describe the target design.
 > See [Roadmap](#roadmap) for what is actually built today.
@@ -115,8 +115,6 @@ GitHub Actions runs on every push and pull request:
 - [ ] Swagger API documentation and request validation
 - [ ] Authentication: register and log in with JWT
 - [ ] Authorization: saved recipes per user, admin-only actions
-- [ ] Docker Compose for local development
-- [ ] GitHub Actions pipeline
 - [ ] Deploy to cloud provider
 
 ## History
@@ -126,4 +124,6 @@ survived; the stack was rebuilt in TypeScript. The original prototype remains in
 
 ## Improvements
 
-- [ ] Infrastructure: Postgres repositories, migrations, seed data
+- [ ] Infrastructure: Postgres repositories, migrations, seed data, images via AWS EC2
+- [ ] Docker Compose for local development
+- [ ] GitHub Actions pipeline

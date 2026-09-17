@@ -1,34 +1,83 @@
-import type { Recipe, RoundedUp, ScaledRecipe, UnitSymbol } from '../domain';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
+import { Portions, type Recipe, type ScaledRecipe, UNITS, type UnitSymbol } from '../domain';
+
+/** Every unit the API can send, listed in the documentation. */
+const UNIT_SYMBOLS = Object.keys(UNITS) as UnitSymbol[];
 
 /**
  * The JSON the API promises the frontend. Deliberately separate from the domain
- * classes: the domain can be reshaped freely without breaking the frontend, and the
- * frontend gets `unit: 'can'` instead of the domain's internal unit object.
+ * classes: the domain can be reshaped freely without breaking the frontend.
+ *
+ * Classes, not interfaces: Swagger reads the @ApiProperty decorators while the app
+ * runs, and interfaces disappear when TypeScript compiles.
  */
-export interface RecipeSummaryResponse {
-  id: string;
-  title: string;
-  /** For the recipe cards: "8 ingredients". */
-  ingredientCount: number;
-  /** Ingredients that come in whole cans -- the anti-waste promise shown on each card. */
-  cans: number;
+export class RecipeSummaryResponse {
+  @ApiProperty({ example: 'coconut-chickpea-curry' })
+  id!: string;
+
+  @ApiProperty({ example: 'Coconut chickpea curry' })
+  title!: string;
+
+  @ApiProperty({ example: 8, description: 'For the recipe cards: "8 ingredients".' })
+  ingredientCount!: number;
+
+  @ApiProperty({ example: 2, description: 'Ingredients that come in whole cans.' })
+  cans!: number;
 }
 
-export interface IngredientResponse {
-  name: string;
-  amount: number;
-  unit: UnitSymbol;
+export class IngredientResponse {
+  @ApiProperty({ example: 'chickpeas' })
+  name!: string;
+
+  @ApiProperty({ example: 1, description: 'Already scaled and rounded by the API.' })
+  amount!: number;
+
+  @ApiProperty({ enum: UNIT_SYMBOLS, example: 'can' })
+  unit!: UnitSymbol;
+
+  @ApiPropertyOptional({ example: 400, description: 'Weight of one whole unit, e.g. one can.' })
   gramsPerUnit?: number;
 }
 
-export interface ScaledRecipeResponse {
-  id: string;
-  title: string;
-  portions: number;
-  isMealPrep: boolean;
-  ingredients: IngredientResponse[];
-  roundedUp: RoundedUp[];
-  steps: string[];
+export class RoundedUpResponse {
+  @ApiProperty({ example: 'chickpeas' })
+  name!: string;
+
+  @ApiProperty({ example: 0.25, description: 'The exact share the recipe needs.' })
+  needed!: number;
+
+  @ApiProperty({ example: 1, description: 'What the recipe tells you to use: whole units.' })
+  used!: number;
+
+  @ApiProperty({ enum: UNIT_SYMBOLS, example: 'can' })
+  unit!: UnitSymbol;
+}
+
+export class ScaledRecipeResponse {
+  @ApiProperty({ example: 'coconut-chickpea-curry' })
+  id!: string;
+
+  @ApiProperty({ example: 'Coconut chickpea curry' })
+  title!: string;
+
+  @ApiProperty({ type: Number, enum: [...Portions.ALLOWED], example: 1 })
+  portions!: number;
+
+  @ApiProperty({ example: false, description: 'True when cooking for more than one person.' })
+  isMealPrep!: boolean;
+
+  @ApiProperty({ type: [IngredientResponse] })
+  ingredients!: IngredientResponse[];
+
+  @ApiProperty({
+    type: [RoundedUpResponse],
+    description: 'Counted ingredients rounded up to whole units, so nothing is left half-used.',
+  })
+  roundedUp!: RoundedUpResponse[];
+
+  @ApiProperty({ type: [String], example: ['Cook the rice.'] })
+  steps!: string[];
 }
 
 export function toRecipeSummaryResponse(recipe: Recipe): RecipeSummaryResponse {
