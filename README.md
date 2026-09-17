@@ -112,7 +112,7 @@ GitHub Actions runs on every push and pull request:
 - [x] Domain layer: `Quantity`, `Unit`, `Ingredient`, `Recipe` + scaling rules, fully unit-tested
 - [x] Next.js frontend: recipe list, recipe detail, portion selector
 - [x] Application layer: use cases (ListRecipes, GetScaledRecipe) and the RecipeRepository port
-- [ ] Swagger API documentation and request validation
+- [x] Swagger API documentation and request validation
 - [ ] Authentication: register and log in with JWT
 - [ ] Authorization: saved recipes per user, admin-only actions
 - [ ] Deploy to cloud provider

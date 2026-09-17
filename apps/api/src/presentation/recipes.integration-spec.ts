@@ -76,12 +76,28 @@ describe('Recipes API', () => {
   it('answers 400 with the rule when portions is not 1, 2, 4 or 8', async () => {
     const { status, body } = await get('/recipes/coconut-chickpea-curry?portions=3');
     expect(status).toBe(400);
-    expect(body.message).toContain('1, 2, 4, 8');
+    // Validation errors list their messages in an array; String() joins them into one text.
+    expect(String(body.message)).toContain('1, 2, 4, 8');
   });
 
   it('answers 400 when portions is not a number', async () => {
     const { status } = await get('/recipes/coconut-chickpea-curry?portions=lots');
     expect(status).toBe(400);
+  });
+
+  it('answers 400 for query fields the API does not know', async () => {
+    const { status, body } = await get('/recipes/coconut-chickpea-curry?portions=2&colour=red');
+    expect(status).toBe(400);
+    expect(String(body.message)).toContain('colour');
+  });
+
+  it('publishes Swagger documentation for the recipe endpoints', async () => {
+    const response = await fetch(baseUrl.replace('/api/v1', '/api/docs-json'));
+    expect(response.status).toBe(200);
+    const docs = (await response.json()) as { paths: Record<string, unknown> };
+    expect(Object.keys(docs.paths)).toEqual(
+      expect.arrayContaining(['/api/v1/recipes', '/api/v1/recipes/{id}']),
+    );
   });
 
   it('answers 404 for a recipe that does not exist', async () => {
