@@ -127,3 +127,6 @@ survived; the stack was rebuilt in TypeScript. The original prototype remains in
 - [ ] Infrastructure: Postgres repositories, migrations, seed data, images via AWS EC2
 - [ ] Docker Compose for local development
 - [ ] GitHub Actions pipeline
+- [ ] Smoke test in CI: build, boot the server, request `/api/v1/health` , it covers the bootstrap
+  that unit and integration tests deliberately skip. The same endpoint serves as the
+  container readiness probe on AWS or any other cloud provider.
