@@ -50,8 +50,6 @@ npm run test:watch --workspace=@recipes4one/api
   unit, so the two can never disagree.
 - To fix the teaspoon measure bug, I decided to use a function 'roundForKitchen' which does: 10 and up → whole number, 1 to 10 → one decimal, under 1 → two decimals meaning that 0.25 tsp of cumin stay 0.25 tsp of cumin instead of rounding down to 0 and crashing.
 
-## Not doing for the demo
+## Not doing for the demo yet
 
-Auth, database, image upload, real recipe API.
-
-If time: CI, Docker, the list page.
+database, image upload

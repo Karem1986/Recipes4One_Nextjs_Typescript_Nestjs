@@ -1,5 +1,4 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-// import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
@@ -35,14 +34,7 @@ export class RecipesController {
     return recipes.map(toRecipeSummaryResponse);
   }
 
-  @Get(':id')
-  @ApiOperation({
-    summary: 'Get a recipe scaled to a number of portions',
-    description:
-      'Measured ingredients are scaled exactly. Counted ingredients (cans, cloves, pieces) are ' +
-      'rounded up to whole units, and listed in `roundedUp`.',
-  })
-  @ApiOkResponse({ type: ScaledRecipeResponse })
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get a recipe scaled to a number of portions',

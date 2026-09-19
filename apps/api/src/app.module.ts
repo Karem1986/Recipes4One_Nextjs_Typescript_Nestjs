@@ -21,6 +21,7 @@ import { RecipesController } from './presentation/recipes.controller';
 @Module({
   controllers: [HealthController, RecipesController],
   providers: [
+    // If switching to a database like Postgress or API, make the changes in RECIPE_REPOSITORY here:
     { provide: RECIPE_REPOSITORY, useFactory: () => new InMemoryRecipeRepository(SEED_RECIPES) },
     {
       provide: ListRecipes,
